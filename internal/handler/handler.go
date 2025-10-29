@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"net/http"
+	"cmd/app/main.go/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,22 +11,23 @@ type Handler interface {
 }
 
 type handler struct {
-	router *gin.Engine
+	router        *gin.Engine
+	walletService service.Wallet
 }
 
-func New(r *gin.Engine) Handler {
+func New(r *gin.Engine, ws service.Wallet) Handler {
 	return &handler{
-		router: r,
+		router:        r,
+		walletService: ws,
 	}
 }
 
 func (h *handler) Register() {
-	h.router.GET("/hello", h.Hello)
+	main := h.router.Group("/api/v1")
+	main.POST("/wallet", h.WalletTransaction)
+	main.GET("/wallets/:uuid", h.WalletBalance)
 }
 
-func (h *handler) Hello(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "hello, world",
-		"success": true,
-	})
-}
+func (h *handler) WalletTransaction(c *gin.Context) {}
+
+func (h *handler) WalletBalance(c *gin.Context) {}
