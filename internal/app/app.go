@@ -17,21 +17,24 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func SetupServer(cfg *config.Config, ws service.Wallet) *http.Server {
-	router := gin.Default()
-
-	h := handler.New(router, ws)
+func SetupRouter(ws service.Wallet) *gin.Engine {
+	r := gin.Default()
+	h := handler.New(r, ws)
 	h.Register()
+	return r
+}
 
+func SetupServer(cfg *config.Config, r *gin.Engine) *http.Server {
 	srv := &http.Server{
 		Addr:    cfg.Listen.Addr,
-		Handler: router,
+		Handler: r,
 	}
 	return srv
 }
 
 func StartServer(s *http.Server) {
 	go func() {
+
 		log.Println("Server is listening: ", s.Addr)
 		err := s.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {

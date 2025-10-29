@@ -8,16 +8,18 @@ import (
 )
 
 func main() {
-
 	cfg := config.GetConfig()
 
 	pool := app.ConnectToDB(cfg)
 	defer pool.Close()
 
 	storage := db.New(pool)
+
 	ws := service.New(storage)
 
-	srv := app.SetupServer(cfg, ws)
+	router := app.SetupRouter(ws)
+
+	srv := app.SetupServer(cfg, router)
 
 	app.StartServer(srv)
 
