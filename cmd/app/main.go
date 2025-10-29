@@ -1,40 +1,25 @@
 package main
 
 import (
+	"cmd/app/main.go/internal/app"
 	"cmd/app/main.go/internal/config"
 	"cmd/app/main.go/internal/db"
-	"cmd/app/main.go/internal/handler"
 	"cmd/app/main.go/internal/service"
-	"cmd/app/main.go/pkg/postgres"
-	"context"
-	"log"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
+
 	cfg := config.GetConfig()
 
-	router := gin.Default()
+	pool := app.ConnectToDB(cfg)
+	defer pool.Close()
 
-	pgxPool, err := postgres.NewPool(context.Background(), 5, cfg.Postgresql.DSN)
-	if err != nil {
-		log.Fatalln("cant connect to db")
-	}
-	log.Println("db connection OK")
-
-	err = pgxPool.Ping(context.Background())
-	if err != nil {
-		log.Fatalln("cant ping to db, err:", err)
-	}
-	log.Println("db ping OK")
-
-	storage := db.New(pgxPool)
+	storage := db.New(pool)
 	ws := service.New(storage)
 
-	h := handler.New(router, ws)
-	h.Register()
+	srv := app.SetupServer(cfg, ws)
 
-	router.Run(cfg.Listen.Addr)
-	defer pgxPool.Close()
+	app.StartServer(srv)
+
+	app.HandleQuit(srv)
 }
