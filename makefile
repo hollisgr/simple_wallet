@@ -1,5 +1,5 @@
 SRC := cmd/app/main.go
-EXEC := wallet_service
+EXEC := simple_wallet
 
 UUID := github.com/google/uuid
 GIN := github.com/gin-gonic/gin
