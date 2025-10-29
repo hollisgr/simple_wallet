@@ -48,6 +48,22 @@ func (s *storage) Create(ctx context.Context, uuid uuid.UUID) error {
 
 func (s *storage) Balance(ctx context.Context, uuid uuid.UUID) (float64, error) {
 	var res float64
+	query := `
+		SELECT 
+			balance
+		FROM
+			wallets
+		WHERE
+			uuid = @uuid
+	`
+	args := pgx.NamedArgs{
+		"uuid": uuid,
+	}
+	row := s.db.QueryRow(ctx, query, args)
+	err := row.Scan(&res)
+	if err != nil {
+		return res, err
+	}
 	return res, nil
 }
 

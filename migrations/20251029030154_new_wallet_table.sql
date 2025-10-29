@@ -2,7 +2,7 @@
 -- +goose StatementBegin
 CREATE TABLE wallets (
     uuid UUID,
-    balance NUMERIC(16, 2) DEFAULT 0
+    balance NUMERIC(16, 2) DEFAULT 0.00
 );
 -- +goose StatementEnd
 

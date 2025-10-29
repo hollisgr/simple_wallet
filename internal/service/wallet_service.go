@@ -46,6 +46,10 @@ func (ws *wallet) Withdraw(ctx context.Context, uuid uuid.UUID, amount float64) 
 	return res, nil
 }
 func (ws *wallet) Balance(ctx context.Context, uuid uuid.UUID) (float64, error) {
-	var res float64
+	res, err := ws.storage.Balance(ctx, uuid)
+	if err != nil {
+		log.Println(err)
+		return res, err
+	}
 	return res, nil
 }
