@@ -2,6 +2,7 @@ package main
 
 import (
 	"cmd/app/main.go/internal/config"
+	"cmd/app/main.go/internal/db"
 	"cmd/app/main.go/internal/handler"
 	"cmd/app/main.go/internal/service"
 	"cmd/app/main.go/pkg/postgres"
@@ -28,7 +29,8 @@ func main() {
 	}
 	log.Println("db ping OK")
 
-	ws := service.New(pgxPool)
+	storage := db.New(pgxPool)
+	ws := service.New(storage)
 
 	h := handler.New(router, ws)
 	h.Register()

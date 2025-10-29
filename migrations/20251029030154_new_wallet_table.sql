@@ -1,9 +1,12 @@
 -- +goose Up
 -- +goose StatementBegin
-SELECT 'up SQL query';
+CREATE TABLE wallets (
+    uuid UUID,
+    balance NUMERIC(16, 2) DEFAULT 0
+);
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
+DROP TABLE IF EXISTS wallets;
 -- +goose StatementEnd

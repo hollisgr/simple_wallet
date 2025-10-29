@@ -5,6 +5,7 @@ UUID := github.com/google/uuid
 GIN := github.com/gin-gonic/gin
 PGX := github.com/jackc/pgx github.com/jackc/pgx/v5/pgxpool
 CLEANENV := github.com/ilyakaznacheev/cleanenv
+VALIDATOR := github.com/go-playground/validator/v10
 
 all: clean build run
 
@@ -25,4 +26,5 @@ get:
 		$(UUID) \
 		$(GIN) \
 		$(PGX) \
-		$(CLEANENV) 
+		$(CLEANENV) \
+		$(VALIDATOR)
