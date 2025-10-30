@@ -92,11 +92,11 @@ The following API endpoints are available:
 
 When performing a transaction (deposit or withdrawal), provide the following body in JSON format:
 
-```json
+```
 {
   "valletId": "<Wallet UUID>",
-  "operationType": "DEPOSIT" OR "WITHDRAW",
-  "amount": <Amount Value>
+  "operationType": "DEPOSIT" or "WITHDRAW",
+  "amount": amount
 }
 ```
 
