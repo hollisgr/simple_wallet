@@ -17,6 +17,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+// SetupRouter configures and returns a gin.Engine instance with registered wallet handlers.
 func SetupRouter(ws service.Wallet) *gin.Engine {
 	r := gin.Default()
 	h := handler.New(r, ws)
@@ -24,6 +25,7 @@ func SetupRouter(ws service.Wallet) *gin.Engine {
 	return r
 }
 
+// SetupServer creates and returns an http.Server instance based on configuration and router.
 func SetupServer(cfg *config.Config, r *gin.Engine) *http.Server {
 	srv := &http.Server{
 		Addr:    cfg.Listen.Addr,
@@ -32,6 +34,7 @@ func SetupServer(cfg *config.Config, r *gin.Engine) *http.Server {
 	return srv
 }
 
+// StartServer starts the server concurrently and logs any fatal errors during its operation.
 func StartServer(s *http.Server) {
 	go func() {
 
@@ -43,6 +46,7 @@ func StartServer(s *http.Server) {
 	}()
 }
 
+// HandleQuit gracefully shuts down the server when receiving SIGINT or SIGTERM signals.
 func HandleQuit(s *http.Server) {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
@@ -59,6 +63,7 @@ func HandleQuit(s *http.Server) {
 	log.Println("Application shutdown complete")
 }
 
+// ConnectToDB establishes a connection pool to PostgreSQL database using given configuration.
 func ConnectToDB(cfg *config.Config) *pgxpool.Pool {
 	pgxPool, err := postgres.NewPool(context.Background(), 5, cfg.Postgresql.DSN)
 	if err != nil {

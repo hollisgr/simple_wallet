@@ -28,6 +28,7 @@ func New(p *pgxpool.Pool) Storage {
 	}
 }
 
+// Create inserts a new wallet record into the database and returns any encountered errors.
 func (s *storage) Create(ctx context.Context, uuid uuid.UUID) error {
 	query := `
 		INSERT INTO
@@ -48,6 +49,7 @@ func (s *storage) Create(ctx context.Context, uuid uuid.UUID) error {
 	return nil
 }
 
+// Balance retrieves balance information from the database for a specified wallet UUID.
 func (s *storage) Balance(ctx context.Context, uuid uuid.UUID) (model.Wallet, error) {
 	var res model.Wallet
 	query := `
@@ -78,6 +80,7 @@ func (s *storage) Balance(ctx context.Context, uuid uuid.UUID) (model.Wallet, er
 	return res, nil
 }
 
+// Deposit updates the balance of a wallet by adding a specified amount and returns updated wallet data.
 func (s *storage) Deposit(ctx context.Context, uuid uuid.UUID, amount float64) (model.Wallet, error) {
 	var res model.Wallet
 	query := `
@@ -106,6 +109,7 @@ func (s *storage) Deposit(ctx context.Context, uuid uuid.UUID, amount float64) (
 	return res, nil
 }
 
+// Withdraw subtracts a specified amount from the wallet's balance and returns updated wallet data.
 func (s *storage) Withdraw(ctx context.Context, uuid uuid.UUID, amount float64) (model.Wallet, error) {
 	var res model.Wallet
 	query := `

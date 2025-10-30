@@ -1,3 +1,5 @@
 *.env
 simple_wallet
 data
+*.bin
+*.txt

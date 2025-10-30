@@ -28,6 +28,8 @@ func New(s db.Storage) Wallet {
 	}
 }
 
+// Create generates a new wallet with a unique identifier and saves it to persistent storage.
+// It generates a UUID, attempts to store the wallet, and returns the UUID upon success or an error otherwise.
 func (ws *wallet) Create(ctx context.Context) (uuid.UUID, error) {
 	uuid := uuid.New()
 	err := ws.storage.Create(ctx, uuid)
@@ -38,6 +40,9 @@ func (ws *wallet) Create(ctx context.Context) (uuid.UUID, error) {
 	return uuid, nil
 }
 
+// Transaction performs deposit or withdrawal operations on a wallet based on the request type.
+// It determines the action (deposit or withdraw) and delegates the task to the storage layer accordingly.
+// Any errors encountered during the process are logged and returned.
 func (ws *wallet) Transaction(ctx context.Context, req dto.WalletTransactionRequest) (model.Wallet, error) {
 	var res model.Wallet
 	var err error
@@ -56,6 +61,8 @@ func (ws *wallet) Transaction(ctx context.Context, req dto.WalletTransactionRequ
 	return res, nil
 }
 
+// Balance retrieves the current balance of a wallet identified by its UUID.
+// It forwards the request to the storage layer and returns the retrieved balance or an error.
 func (ws *wallet) Balance(ctx context.Context, uuid uuid.UUID) (model.Wallet, error) {
 	res, err := ws.storage.Balance(ctx, uuid)
 	if err != nil {

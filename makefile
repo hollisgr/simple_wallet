@@ -9,7 +9,7 @@ VALIDATOR := github.com/go-playground/validator/v10
 
 all: clean build run
 
-build:
+build: $(SRC)
 	go build -o $(EXEC) $(SRC)
 
 run: 
@@ -34,3 +34,9 @@ docker-compose-up: docker-compose-down
 
 docker-compose-down:
 	sudo docker compose -f docker-compose.yml --env-file=config.env down
+
+vegeta_test:
+	vegeta attack -rate=1000/s -duration=30s -format=json -targets=requests.txt -output=results.bin
+
+vegeta_report:
+	vegeta report results.bin
