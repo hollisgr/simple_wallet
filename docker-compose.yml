@@ -1,0 +1,42 @@
+---
+
+services:
+  simple_wallet:
+    container_name: simple-wallet
+    build:
+      context: ./
+      dockerfile: ./build/wallet/dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports: 
+      - "8888:8888"
+    
+  postgres:
+    image: postgres:16-alpine
+    container_name: psql-db
+    environment:
+      POSTGRES_DB: ${PSQL_NAME}
+      POSTGRES_USER: ${PSQL_USER}
+      POSTGRES_PASSWORD: ${PSQL_PASSWORD}
+      POSTGRES_PORT: ${PSQL_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PSQL_USER} -d ${PSQL_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "25432:5432"
+
+  migration:
+    container_name: migrator
+    build:
+      context: ./
+      dockerfile: ./build/migrator/dockerfile
+    command:
+      ["goose", "-dir", "migrations", "postgres", "host=${PSQL_HOST} port=${PSQL_PORT} dbname=${PSQL_NAME} user=${PSQL_USER} password=${PSQL_PASSWORD} sslmode=disable", "up"]
+    depends_on:
+      postgres:
+        condition: service_healthy

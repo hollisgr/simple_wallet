@@ -28,3 +28,9 @@ get:
 		$(PGX) \
 		$(CLEANENV) \
 		$(VALIDATOR)
+
+docker-compose-up: docker-compose-down
+	sudo docker compose -f docker-compose.yml --env-file=config.env up
+
+docker-compose-down:
+	sudo docker compose -f docker-compose.yml --env-file=config.env down
