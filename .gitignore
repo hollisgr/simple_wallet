@@ -3,3 +3,4 @@ simple_wallet
 data
 *.bin
 *.txt
+*.out

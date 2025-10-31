@@ -82,7 +82,7 @@ func (h *handler) WalletCreate(c *gin.Context) {
 	data := map[string]any{
 		"walletId": uuid,
 	}
-	h.sendMsg(c, true, http.StatusOK, data)
+	h.sendMsg(c, true, http.StatusCreated, data)
 }
 
 // WalletBalance fetches the current balance of a wallet identified by its UUID.
