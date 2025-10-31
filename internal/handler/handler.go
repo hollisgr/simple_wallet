@@ -45,13 +45,9 @@ func (h *handler) Register() {
 // Upon completion, it either returns the result or an appropriate error code if something goes wrong.
 func (h *handler) WalletTransaction(c *gin.Context) {
 	req := dto.WalletTransactionRequest{}
-	err := c.ShouldBindJSON(&req)
-	if err != nil {
-		h.sendMsg(c, false, http.StatusBadRequest, "Invalid request JSON")
-		return
-	}
+	c.ShouldBindJSON(&req)
 
-	err = h.validator.Struct(req)
+	err := h.validator.Struct(req)
 	if err != nil {
 		h.sendMsg(c, false, http.StatusBadRequest, fmt.Sprint("validation err: ", err))
 		return
