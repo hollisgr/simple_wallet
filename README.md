@@ -25,13 +25,13 @@ This project implements a simple **REST API** for managing digital wallets. It p
 - **Step 1**: Create a `config.env` file with environment variables, for example:
 
 ```bash
-BIND_IP=127.0.0.1
+BIND_IP=0.0.0.0
 LISTEN_PORT=8888
-PSQL_HOST=127.0.0.1
-PSQL_PORT=5432
-PSQL_NAME=simple_wallet
-PSQL_USER=user
-PSQL_PASSWORD=password
+PSQL_HOST=your_db_host
+PSQL_PORT=your_db_port
+PSQL_NAME=your_db_name
+PSQL_USER=your_db_user
+PSQL_PASSWORD=your_db_password
 ```
 
 - **Step 2**: Install `goose` migration tool (optional):
@@ -44,7 +44,7 @@ go install github.com/pressly/goose/v3/cmd/goose@latest
 
 ```bash
 goose -dir=migrations postgres \
-"host=your_db_host port=your_db_port dbname=db_name user=your_username_here password=your_password_here sslmode=disable" up
+"host=your_db_host port=your_db_port dbname=your_db_name user=your_db_user password=your_db_password sslmode=disable" up
 ```
 
 - **Step 4**: Build and run the server:
@@ -61,13 +61,13 @@ make run
 - **Step 1**: Create a `config.env` file with environment variables, for example:
 
 ```bash
-BIND_IP=127.0.0.1
+BIND_IP=0.0.0.0
 LISTEN_PORT=8888
 PSQL_HOST=psql-db
 PSQL_PORT=5432
-PSQL_NAME=simple_wallet
-PSQL_USER=user
-PSQL_PASSWORD=password
+PSQL_NAME=postgres
+PSQL_USER=postgres
+PSQL_PASSWORD=postgres
 ```
 
 - **Step 2**: Start the containerized application:
