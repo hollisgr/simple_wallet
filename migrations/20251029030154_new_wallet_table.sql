@@ -5,6 +5,10 @@ CREATE TABLE wallets (
     balance NUMERIC(16, 2) DEFAULT 0.00
 );
 
+INSERT INTO 
+    wallets (uuid, balance) 
+VALUES ('a9ea66f2-8189-454c-8cb0-a1e5ff31e4df', 0.00);
+
 CREATE INDEX wallet_uuid_idx ON public.wallets(uuid);
 -- +goose StatementEnd
 
